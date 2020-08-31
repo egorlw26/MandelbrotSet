@@ -5,7 +5,8 @@ let miny;
 let maxy;
 function setup()
 {
-    let canv = createCanvas(800, 800);    
+    let size = min(windowWidth, windowHeight);
+    let canv = createCanvas(floor(size * 0.9), floor(size*0.9));    
     canv.position(windowWidth/2 - width/2, windowHeight/2 - height/2);
     numberOfIterations = 50;
 
@@ -51,7 +52,7 @@ function paintPixels(data)
     for(let item of data)
     {
         let color = item[2];        
-        paintPixel(item[0], item[1], 0, 0, color);
+        paintPixel(item[0], item[1], color, 0, color/4);
     }
 
     updatePixels();
@@ -64,12 +65,12 @@ function calcMandelbrot(x, y)
 
     let n = 0;
 
-    for(; n < numberOfIterations; ++n)
+    for(; n <= numberOfIterations; ++n)
     {
         let xn = xp * xp - yp * yp + x;
         let yn = 2 * xp * yp + y;
 
-        if(xn * xn + yn * yn >= 4)
+        if(xn * xn + yn * yn > 4)
             break;
 
         xp = xn;
