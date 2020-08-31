@@ -1,12 +1,12 @@
 let numberOfIterations;
-let data = [];
 let minx;
 let maxx;
 let miny;
 let maxy;
 function setup()
 {
-    let canv = createCanvas(300, 300);    
+    let canv = createCanvas(800, 800);    
+    canv.position(windowWidth/2 - width/2, windowHeight/2 - height/2);
     numberOfIterations = 50;
 
     minx = -1.5;
@@ -15,20 +15,23 @@ function setup()
     maxy = 1.2
     step = 0.1;
 
-    data = calcData();
-    paintPixels(data);
-    canv.mousePressed(onMouseClick);
+    paintPixels(calcData());
+    canv.mousePressed(mouseClick);
 }
 
-
-function onMouseClick()
+function mouseClick()
 {
-    minx += mouseX/2;
-    maxx -= (width - mouseX)/2;
-    miny += mouseY/2;
-    maxy -= (height - mouseY)/2;
-    console.log(minx, maxx);
-    console.log(mouseX);
+    let x = map(mouseX, 0, width, minx, maxx);
+    let y = map(mouseY, 0, height, miny, maxy);
+
+    let xLengthHalf = abs(maxx - minx)/4;
+    let yLengthHalf = abs(maxy - miny)/4;
+
+    minx = x - xLengthHalf;
+    maxx = x + xLengthHalf;
+    miny = y - yLengthHalf;
+    maxy = y + yLengthHalf;
+
     paintPixels(calcData());
 }
 
@@ -47,7 +50,8 @@ function paintPixels(data)
 
     for(let item of data)
     {
-        paintPixel(item[0], item[1], 0, 0, item[2]);
+        let color = item[2];        
+        paintPixel(item[0], item[1], 0, 0, color);
     }
 
     updatePixels();
